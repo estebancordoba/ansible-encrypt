@@ -1,3 +1,5 @@
 node_modules/
 .env
 .vault_pass
+android/app/src/debug/my-release-key.keystore
+android/app/src/stagingrelease/google-services.json

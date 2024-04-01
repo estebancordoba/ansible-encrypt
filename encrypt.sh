@@ -11,7 +11,8 @@ FILES_TO_ENCRYPT=(
   "android/app/src/debug/debug.keystore"
   "android/app/src/stagingrelease/google-services.json"
   "android/app/src/stagingrelease/debug.keystore"
-  "ios/Environments/Staging/GoogleService-Info.plist"
+  "ios/Environments/Staging/GoogleService-Info.plist",
+  "android/app/src/debug/my-release-key.keystore"
 )
 
 for file in "${FILES_TO_ENCRYPT[@]}"; do

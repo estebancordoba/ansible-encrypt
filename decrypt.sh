@@ -10,7 +10,8 @@ FILES_TO_DECRYPT=(
   "android/app/src/debug/debug.keystore.encrypted"
   "android/app/src/stagingrelease/google-services.json.encrypted"
   "android/app/src/stagingrelease/debug.keystore.encrypted"
-  "ios/Environments/Staging/GoogleService-Info.plist.encrypted"
+  "ios/Environments/Staging/GoogleService-Info.plist.encrypted",
+  "android/app/src/debug/my-release-key.keystore"
 )
 
 for file in "${FILES_TO_DECRYPT[@]}"; do
