@@ -1,26 +1,32 @@
 #!/bin/bash
 
+# Include the list of files
+source files_to_process.sh
+
 VAULT_PASSWORD_FILE=".vault_pass"
 ENCRYPTED_SUFFIX=".encrypted"
 
-# Lista de archivos a encriptar
-FILES_TO_ENCRYPT=(
-  ".env"
-  ".env.staging"
-  "android/app/src/debug/google-services.json"
-  "android/app/src/debug/debug.keystore"
-  "android/app/src/stagingrelease/google-services.json"
-  "android/app/src/stagingrelease/debug.keystore"
-  "ios/Environments/Staging/GoogleService-Info.plist",
-  "android/app/src/debug/my-release-key.keystore"
-)
+# Check if ansible-vault is installed
+if ! command -v ansible-vault &> /dev/null; then
+    echo "ansible-vault is not installed. Please install it to continue."
+    exit 1
+fi
 
-for file in "${FILES_TO_ENCRYPT[@]}"; do
+# Password handling
+if [ -f "$VAULT_PASSWORD_FILE" ]; then
+    VAULT_CMD="--vault-password-file $VAULT_PASSWORD_FILE"
+else
+    echo -n "Enter the ansible-vault password: "
+    read -s VAULT_PASSWORD
+    echo
+    VAULT_CMD="--vault-password $VAULT_PASSWORD"
+fi
+
+for file in "${FILES_TO_PROCESS[@]}"; do
   if [ -f "$file" ]; then
-    ansible-vault encrypt --vault-password-file $VAULT_PASSWORD_FILE "$file" --output "${file}${ENCRYPTED_SUFFIX}"
+    ansible-vault encrypt $VAULT_CMD "$file" --output "${file}${ENCRYPTED_SUFFIX}"
     echo "Encrypted $file"
   else
     echo "$file does not exist and was not encrypted."
   fi
 done
-
